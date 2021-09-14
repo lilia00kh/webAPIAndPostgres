@@ -3,24 +3,24 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using WebApplication.Models;
+using WebApplication.DTO;
 
 namespace WebApplication.Controllers
 {
     [ApiController]
-    [Route(" WeatgerAndCity")]
+    [Route("api/[controller]")]
     public class WeatherAndCityController : ControllerBase
     {
         private readonly ApplicationContext _db = new ApplicationContext();
         [HttpGet]
-        public IEnumerable<WeatherAndCity> Get()
+        public IEnumerable<WeatherAndCityDTO> Get()
         {
             var weathersAndCities = _db.WeathersAndCities.ToList();
             return weathersAndCities;
         }
 
         [HttpDelete("delete/{id}")]
-        public ActionResult<WeatherAndCity> Delete(Guid id)
+        public ActionResult<WeatherAndCityDTO> Delete(Guid id)
         {
             var weathersAndCities = _db.WeathersAndCities.ToList();
             var weatherAndCity = weathersAndCities.FirstOrDefault(x => x.Id == id);
@@ -32,7 +32,7 @@ namespace WebApplication.Controllers
         //something....
 
         [HttpGet("get/{id}")]
-        public ActionResult<WeatherAndCity> Get(Guid id)
+        public ActionResult<WeatherAndCityDTO> Get(Guid id)
         {
             var weathersAndCities = _db.WeathersAndCities.ToList();
             var weatherAndCity = weathersAndCities.FirstOrDefault(x => x.Id == id);
@@ -42,7 +42,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpPut("update")]
-        public ActionResult<WeatherAndCity> Update([FromBody] WeatherAndCity weatherAndCity)
+        public ActionResult<WeatherAndCityDTO> Update([FromBody] WeatherAndCityDTO weatherAndCity)
         {
             _db.WeathersAndCities.Update(weatherAndCity);
             _db.SaveChanges();
@@ -50,7 +50,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost("add")]
-        public ActionResult<WeatherAndCity> Add([FromBody] WeatherAndCity weatherAndCity)
+        public ActionResult<WeatherAndCityDTO> Add([FromBody] WeatherAndCityDTO weatherAndCity)
         {
             _db.WeathersAndCities.Add(weatherAndCity);
             _db.SaveChanges();

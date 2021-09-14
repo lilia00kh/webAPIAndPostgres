@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebApplication.Models;
+using WebApplication.DTO;
 
 namespace WebApplication
 {
     public class ApplicationContext : DbContext
     {
-        public DbSet<WeatherForecast> WeatherForecasts { get; set; }
-        public DbSet<WeatherAndCity> WeathersAndCities { get; set; }
-        public DbSet<City> Cities { get; set; }
+        public DbSet<WeatherForecastDTO> WeatherForecasts { get; set; }
+        public DbSet<WeatherAndCityDTO> WeathersAndCities { get; set; }
+        public DbSet<CityDTO> Cities { get; set; }
 
         public ApplicationContext()
         {

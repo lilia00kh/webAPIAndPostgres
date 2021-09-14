@@ -3,11 +3,12 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebApplication.DTO;
 
 namespace WebApplication.Controllers
 {
     [ApiController]
-    [Route("weatherForecast")]
+    [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private readonly ApplicationContext _db = new ApplicationContext();
@@ -24,14 +25,14 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public IEnumerable<WeatherForecastDTO> Get()
         {
             var weatherForecasts = _db.WeatherForecasts.ToList();
             return weatherForecasts;
         }
 
         [HttpDelete("delete/{id}")]
-        public ActionResult<WeatherForecast> Delete(Guid id)
+        public ActionResult<WeatherForecastDTO> Delete(Guid id)
         {
             var weatherForecasts = _db.WeatherForecasts.ToList();
             var weather = weatherForecasts.FirstOrDefault(x => x.Id == id);
@@ -41,7 +42,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet("get/{id}")]
-        public ActionResult<WeatherForecast> Get(Guid id)
+        public ActionResult<WeatherForecastDTO> Get(Guid id)
         {
             var weatherForecasts = _db.WeatherForecasts.ToList();
             var weather = weatherForecasts.FirstOrDefault(x => x.Id == id);
@@ -51,7 +52,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpPut("update")]
-        public ActionResult<WeatherForecast> Update([FromBody] WeatherForecast weather)
+        public ActionResult<WeatherForecastDTO> Update([FromBody] WeatherForecastDTO weather)
         {
             var weatherForecasts = _db.WeatherForecasts.ToList();
             weather.Date = DateTime.Now;
@@ -61,17 +62,17 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost("add")]
-        public ActionResult<WeatherForecast> Add()
+        public ActionResult<WeatherForecastDTO> Add()
         {
             var rng = new Random();
-            var weather1 = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            var weather1 = Enumerable.Range(1, 5).Select(index => new WeatherForecastDTO
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = rng.Next(-20, 55),
                 Summary = Summaries[rng.Next(Summaries.Length)]
             }).FirstOrDefault();
 
-            var weather2 = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            var weather2 = Enumerable.Range(1, 5).Select(index => new WeatherForecastDTO
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = rng.Next(-20, 55),

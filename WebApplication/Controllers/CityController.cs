@@ -3,24 +3,24 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using WebApplication.Models;
+using WebApplication.DTO;
 
 namespace WebApplication.Controllers
 {
     [ApiController]
-    [Route("city")]
+    [Route("api/[controller]")]
     public class CityController : ControllerBase
     {
         private readonly ApplicationContext _db = new ApplicationContext();
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public IEnumerable<WeatherForecastDTO> Get()
         {
             var weatherForecasts = _db.WeatherForecasts.ToList();
             return weatherForecasts;
         }
 
         [HttpDelete("delete/{id}")]
-        public ActionResult<City> Delete(Guid id)
+        public ActionResult<CityDTO> Delete(Guid id)
         {
             var cities = _db.Cities.ToList();
             var city = cities.FirstOrDefault(x => x.Id == id);
@@ -30,7 +30,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet("get/{id}")]
-        public ActionResult<City> Get(Guid id)
+        public ActionResult<CityDTO> Get(Guid id)
         {
             var cities = _db.Cities.ToList();
             var city = cities.FirstOrDefault(x => x.Id == id);
@@ -40,7 +40,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpPut("update")]
-        public ActionResult<City> Update([FromBody] City city)
+        public ActionResult<CityDTO> Update([FromBody] CityDTO city)
         {
             _db.Cities.Update(city);
             _db.SaveChanges();
@@ -48,7 +48,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost("add")]
-        public ActionResult<City> Add([FromBody] City city)
+        public ActionResult<CityDTO> Add([FromBody] CityDTO city)
         {
             _db.Cities.Add(city);
             _db.SaveChanges();
