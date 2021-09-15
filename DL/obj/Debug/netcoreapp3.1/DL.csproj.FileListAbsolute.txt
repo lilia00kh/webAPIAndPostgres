@@ -1,0 +1,10 @@
+C:\Users\C281654\source\repos\WebApplication\DL\obj\Debug\netcoreapp3.1\DL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\C281654\source\repos\WebApplication\DL\obj\Debug\netcoreapp3.1\DL.AssemblyInfoInputs.cache
+C:\Users\C281654\source\repos\WebApplication\DL\obj\Debug\netcoreapp3.1\DL.AssemblyInfo.cs
+C:\Users\C281654\source\repos\WebApplication\DL\obj\Debug\netcoreapp3.1\DL.csproj.CoreCompileInputs.cache
+C:\Users\C281654\source\repos\WebApplication\DL\bin\Debug\netcoreapp3.1\DL.deps.json
+C:\Users\C281654\source\repos\WebApplication\DL\bin\Debug\netcoreapp3.1\DL.dll
+C:\Users\C281654\source\repos\WebApplication\DL\bin\Debug\netcoreapp3.1\DL.pdb
+C:\Users\C281654\source\repos\WebApplication\DL\obj\Debug\netcoreapp3.1\DL.dll
+C:\Users\C281654\source\repos\WebApplication\DL\obj\Debug\netcoreapp3.1\DL.pdb
+C:\Users\C281654\source\repos\WebApplication\DL\obj\Debug\netcoreapp3.1\DL.csproj.AssemblyReference.cache

@@ -39,3 +39,16 @@ C:\Users\C281654\source\repos\WebApplication\WebApplication\obj\Debug\netcoreapp
 C:\Users\C281654\source\repos\WebApplication\WebApplication\obj\Debug\netcoreapp3.1\WebApplication.pdb
 C:\Users\C281654\source\repos\WebApplication\WebApplication\obj\Debug\netcoreapp3.1\WebApplication.genruntimeconfig.cache
 C:\Users\C281654\source\repos\WebApplication\WebApplication\obj\Debug\netcoreapp3.1\WebApplication.csproj.AssemblyReference.cache
+C:\Users\C281654\source\repos\WebApplication\WebApplication\bin\Debug\netcoreapp3.1\AutoMapper.dll
+C:\Users\C281654\source\repos\WebApplication\WebApplication\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\C281654\source\repos\WebApplication\WebApplication\bin\Debug\netcoreapp3.1\DL.dll
+C:\Users\C281654\source\repos\WebApplication\WebApplication\bin\Debug\netcoreapp3.1\DL.pdb
+C:\Users\C281654\source\repos\WebApplication\WebApplication\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.dll
+C:\Users\C281654\source\repos\WebApplication\WebApplication\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\C281654\source\repos\WebApplication\WebApplication\bin\Debug\netcoreapp3.1\Npgsql.Json.NET.dll
+C:\Users\C281654\source\repos\WebApplication\WebApplication\bin\Debug\netcoreapp3.1\System.Data.SqlClient.dll
+C:\Users\C281654\source\repos\WebApplication\WebApplication\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
+C:\Users\C281654\source\repos\WebApplication\WebApplication\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\sni.dll
+C:\Users\C281654\source\repos\WebApplication\WebApplication\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
+C:\Users\C281654\source\repos\WebApplication\WebApplication\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\C281654\source\repos\WebApplication\WebApplication\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll

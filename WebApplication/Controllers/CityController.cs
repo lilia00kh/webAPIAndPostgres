@@ -3,56 +3,111 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using DL.DomainModels;
 using WebApplication.DTO;
+using WebApplication.Interfaces;
 
 namespace WebApplication.Controllers
 {
+    [Route("[controller]")]
     [ApiController]
-    [Route("api/[controller]")]
+    
     public class CityController : ControllerBase
     {
-        private readonly ApplicationContext _db = new ApplicationContext();
-        [HttpGet]
-        public IEnumerable<WeatherForecastDTO> Get()
+        private readonly ICityService _cityService;
+        private readonly IMapper _autoMapper;
+
+        public CityController(ICityService cityService, IMapper autoMapper)
+        
         {
-            var weatherForecasts = _db.WeatherForecasts.ToList();
-            return weatherForecasts;
+            _cityService = cityService ?? throw new ArgumentNullException(nameof(cityService));
+            _autoMapper = autoMapper ?? throw new ArgumentNullException(nameof(autoMapper));
+        }
+        //private readonly ApplicationContext _db = new ApplicationContext();
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            try
+            {
+                var cities = await _cityService.GetCities();
+                return Ok(cities);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
         [HttpDelete("delete/{id}")]
-        public ActionResult<CityDTO> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var cities = _db.Cities.ToList();
-            var city = cities.FirstOrDefault(x => x.Id == id);
-            if (city != null) _db.Cities.Remove(city);
-            _db.SaveChanges();
-            return Ok(city);
+            try
+            {
+                await _cityService.DeleteCityById(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
+            
         }
 
         [HttpGet("get/{id}")]
-        public ActionResult<CityDTO> Get(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
-            var cities = _db.Cities.ToList();
-            var city = cities.FirstOrDefault(x => x.Id == id);
-            if (city == null)
-                return NotFound();
-            return new ObjectResult(city);
+            try
+            {
+                var city = await _cityService.GetCityById(id);
+                return Ok(city);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpPut("update")]
-        public ActionResult<CityDTO> Update([FromBody] CityDTO city)
-        {
-            _db.Cities.Update(city);
-            _db.SaveChanges();
-            return Ok(city);
-        }
+        //[HttpPut("update")]
+        //public async Task<IActionResult> Update([FromBody] CityDto cityDto)
+        //{
+        //    try
+        //    {
+        //        var cityModel = new CityDomainModel()
+        //        {
+        //            Id = cityDto.Id,
+        //            Name = cityDto.Name
+        //        };
+        //        await _cityService.UpdateCity(cityModel);
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
-        [HttpPost("add")]
-        public ActionResult<CityDTO> Add([FromBody] CityDTO city)
-        {
-            _db.Cities.Add(city);
-            _db.SaveChanges();
-            return Ok();
-        }
+        //[HttpPost("add")]
+        //public async Task<IActionResult> Add([FromBody] CityDto cityDTO)
+        //{
+        //    try
+        //    {
+        //        var expJob = _autoMapper.Map<ExportJob>(exportJob.Data);
+        //        var cityModel = new CityModel()
+        //        {
+        //            Id = cityDTO.Id,
+        //            Name = cityDTO.Name
+        //        };
+        //        await _cityService.CreateCity(cityModel);
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
     }
 }

@@ -1,10 +1,59 @@
-﻿using System;
+﻿using DL.DomainModels;
+using DL.Interfaces;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Text;
+using System.Threading.Tasks;
+using DL.Providers;
+using DL.Utility;
+using Npgsql;
+using NpgsqlTypes;
 
 namespace DL.Repositories
 {
-    class CityRepository
+    public class CityRepository : RepositoryBase<CityDomainModel>, ICityRepository
     {
+        private readonly NpgsqlConnection npgsqlConnection;
+        private const string CityTable = @"""Cities""";
+        public CityRepository(INpgSqlProvider connectionProvider)
+        {
+            if (connectionProvider == null)
+            {
+                throw new ArgumentNullException(nameof(connectionProvider));
+            }
+
+            npgsqlConnection = connectionProvider.Connection;
+        }
+
+        
+
+        public async Task<IEnumerable<CityDomainModel>> GetAllCities()
+        {
+            var lstCity = new List<CityDomainModel>();
+            string queryString =
+                $@"SELECT *
+                FROM {CityTable}";
+
+            using (var query = new NpgsqlCommand(queryString, npgsqlConnection))
+            {
+                var ps = query.Parameters;
+                using NpgsqlDataReader reader =
+                    await query.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    lstCity.Add(
+                        new CityDomainModel()
+                        {
+                            Id = reader.GetGuid(reader.GetOrdinal("Id")),
+                            Name = reader.GetString(reader.GetOrdinal("Name"))
+                        });
+                }
+
+                return lstCity;
+            }
+        }
+
     }
 }

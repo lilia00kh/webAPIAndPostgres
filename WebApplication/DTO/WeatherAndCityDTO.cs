@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace WebApplication.DTO
 {
-    public class WeatherAndCityDTO
+    public class WeatherAndCityDto
     {
         public Guid Id { get; set; }
         public Guid CityId { get; set; }
         public Guid WeatherId { get; set; }
         [ForeignKey("CityId")]
-        public CityDTO City { get; set; }
+        public CityDto City { get; set; }
         
        
         [ForeignKey("WeatherId")]
-        public WeatherForecastDTO Weather { get; set; }
+        public WeatherDto Weather { get; set; }
 
     }
 }

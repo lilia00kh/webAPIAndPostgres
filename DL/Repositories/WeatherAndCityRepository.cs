@@ -1,10 +1,12 @@
-﻿using System;
+﻿using DL.DomainModels;
+using DL.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace DL.Repositories
 {
-    class WeatherAndCityRepository
+    public class WeatherAndCityRepository : RepositoryBase<WeatherAndCityDomainModel>, IWeatherAndCityRepository
     {
     }
 }

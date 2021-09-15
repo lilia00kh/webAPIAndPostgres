@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DL
 {
-    class DependencyInjection
+    public class DependencyInjection
     {
     }
 }

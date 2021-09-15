@@ -10,6 +10,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using BLL;
+using DL.Interfaces;
+using DL.Providers;
+using DL.Repositories;
+using WebApplication.Interfaces;
+using WebApplication.Services;
 
 namespace WebApplication
 {
@@ -26,7 +33,14 @@ namespace WebApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddAutoMapper(typeof(AutoMapping));
+            services.AddScoped<INpgSqlProvider, NpgSqlProvider>();
+            services.AddScoped<IWeatherAndCityService, WeatherAndCityService>();
+            services.AddScoped<IWeatherService, WeatherService>();
+            services.AddScoped<ICityService, CityService>();
+            services.AddScoped<ICityRepository, CityRepository>();
             services.AddControllers();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

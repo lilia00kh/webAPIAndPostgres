@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using WebApplication.Configuration;
 
 namespace WebApplication
 {
@@ -15,9 +14,7 @@ namespace WebApplication
     {
         public static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
-            Configuration.Configuration.SeedData();
-            host.Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
