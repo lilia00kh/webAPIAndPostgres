@@ -13,7 +13,7 @@ namespace DL.Repositories
     {
         private readonly NpgsqlConnection npgsqlConnection;
         private const string WeatherTable = @"""Weathers""";
-        public WeatherRepository(INpgSqlProvider connectionProvider)
+        public WeatherRepository(INpgSqlProvider connectionProvider) : base(connectionProvider)
         {
             if (connectionProvider == null)
             {
@@ -23,7 +23,10 @@ namespace DL.Repositories
             npgsqlConnection = connectionProvider.Connection;
         }
 
-
+        public async Task DeleteById(Guid id)
+        {
+            await Delete(id, WeatherTable);
+        }
 
         public async Task<IEnumerable<WeatherDomainModel>> GetAllWeathers()
         {

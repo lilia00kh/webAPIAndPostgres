@@ -38,15 +38,21 @@ namespace WebApplication.Controllers
             }
 
         }
-        //[HttpDelete("delete/{id}")]
-        //public ActionResult<WeatherAndCityDTO> Delete(Guid id)
-        //{
-        //    var weathersAndCities = _db.WeathersAndCities.ToList();
-        //    var weatherAndCity = weathersAndCities.FirstOrDefault(x => x.Id == id);
-        //    if (weatherAndCity != null) _db.WeathersAndCities.Remove(weatherAndCity);
-        //    _db.SaveChanges();
-        //    return Ok(weatherAndCity);
-        //}
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                await weatherAndCityService.DeleteWeatherAndCityById(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+
+        }
 
         ////something....
 

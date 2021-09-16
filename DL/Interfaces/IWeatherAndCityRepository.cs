@@ -8,6 +8,7 @@ namespace DL.Interfaces
 {
     public interface IWeatherAndCityRepository: IRepositoryBase<WeatherAndCityDomainModel>
     {
-        public Task<IEnumerable<WeatherAndCityDomainModel>> GetAllWeathersAndCities();
+        Task<IEnumerable<WeatherAndCityDomainModel>> GetAllWeathersAndCities();
+        Task DeleteById(Guid id);
     }
 }

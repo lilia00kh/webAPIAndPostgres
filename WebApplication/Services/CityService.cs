@@ -22,9 +22,9 @@ namespace WebApplication.Services
             throw new NotImplementedException();
         }
 
-        public Task DeleteCityById(Guid id)
+        public async Task DeleteCityById(Guid id)
         {
-            throw new NotImplementedException();
+            await _cityRepository.DeleteById(id);
         }
 
         public async Task<IEnumerable<CityDomainModel>> GetCities()

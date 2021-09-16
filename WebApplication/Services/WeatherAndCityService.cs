@@ -23,7 +23,7 @@ namespace WebApplication.Services
 
         public async Task DeleteWeatherAndCityById(Guid id)
         {
-            throw new NotImplementedException();
+            await _weatherAndCityRepository.DeleteById(id);
         }
 
         public async Task UpdateWeatherAndCity(WeatherAndCityDto weatherAndCityDto)

@@ -46,7 +46,23 @@ namespace WebApplication.Controllers
            
         }
 
-        //[HttpDelete("delete/{id}")]
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                await weatherService.DeleteWeatherById(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+
+        }
+
+        //
         //public ActionResult<WeatherDTO> Delete(Guid id)
         //{
         //    //var weatherForecasts = _db.WeatherForecasts.ToList();

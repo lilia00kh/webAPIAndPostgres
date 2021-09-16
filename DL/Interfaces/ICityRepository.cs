@@ -9,5 +9,6 @@ namespace DL.Interfaces
     public interface ICityRepository : IRepositoryBase<CityDomainModel>
     {
         public Task<IEnumerable<CityDomainModel>> GetAllCities();
+        Task DeleteById(Guid id);
     }
 }
