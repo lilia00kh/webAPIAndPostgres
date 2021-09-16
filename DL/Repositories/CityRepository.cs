@@ -44,12 +44,7 @@ namespace DL.Repositories
                     await query.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
                 {
-                    lstCity.Add(
-                        new CityDomainModel()
-                        {
-                            Id = reader.GetGuid(reader.GetOrdinal("Id")),
-                            Name = reader.GetString(reader.GetOrdinal("Name"))
-                        });
+                    lstCity.Add(NewCityDomainModel(reader));
                 }
 
                 return lstCity;
@@ -61,28 +56,21 @@ namespace DL.Repositories
         }
         public async Task<CityDomainModel> GetById(Guid id)
         {
-            var queryString =
-                $"SELECT * FROM {CityTable} Where \"Id\" = @id";
-
-            await using var query = new NpgsqlCommand(queryString, npgsqlConnection);
-            var ps = query.Parameters;
-            ps.AddWithValue("@id", NpgsqlDbType.Uuid, id);
-            await using var reader = await query.ExecuteReaderAsync();
+            await using var reader = await GetReader(id, CityTable);
             CityDomainModel city = null;
-            if (!reader.HasRows)
-            {
-                throw new ArgumentNullException("", $"Does not exist city with id {id}");
-            }
             if(await reader.ReadAsync())
             {
-                city = new CityDomainModel()
-                {
-                    Id = reader.GetGuid(reader.GetOrdinal("Id")),
-                    Name = reader.GetString(reader.GetOrdinal("Name"))
-                };
+                city = NewCityDomainModel( reader);
             }
-
             return city;
+        }
+        private static CityDomainModel NewCityDomainModel(NpgsqlDataReader reader)
+        {
+            return new CityDomainModel()
+            {
+                Id = reader.GetGuid(reader.GetOrdinal("Id")),
+                Name = reader.GetString(reader.GetOrdinal("Name"))
+            };
         }
     }
 }

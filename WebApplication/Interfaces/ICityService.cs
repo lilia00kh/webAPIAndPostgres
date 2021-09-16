@@ -13,6 +13,6 @@ namespace WebApplication.Interfaces
         Task DeleteCityById(Guid id);
         Task UpdateCity(CityDto cityDto);
         Task CreateCity(CityDto cityDto);
-        Task<CityDto> GetCityById(Guid id);
+        Task<CityDomainModel> GetCityById(Guid id);
     }
 }

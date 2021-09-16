@@ -32,9 +32,9 @@ namespace WebApplication.Services
             return await _cityRepository.GetAllCities();
         }
 
-        public Task<CityDto> GetCityById(Guid id)
+        public async Task<CityDomainModel> GetCityById(Guid id)
         {
-            throw new NotImplementedException();
+            return await _cityRepository.GetById(id);
         }
 
         public Task UpdateCity(CityDto cityDto)

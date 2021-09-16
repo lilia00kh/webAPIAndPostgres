@@ -61,7 +61,19 @@ namespace WebApplication.Controllers
 
 
         }
-
+        [HttpGet("get/{id}")]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            try
+            {
+                var weather = _autoMapper.Map<WeatherDto>(await weatherService.GetWeatherById(id));
+                return Ok(weather);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         //
         //public ActionResult<WeatherDTO> Delete(Guid id)
         //{

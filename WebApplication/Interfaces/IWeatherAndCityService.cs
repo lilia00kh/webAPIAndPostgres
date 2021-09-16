@@ -13,6 +13,6 @@ namespace WebApplication.Interfaces
         Task DeleteWeatherAndCityById(Guid id);
         Task UpdateWeatherAndCity(WeatherAndCityDto weatherAndCityDto);
         Task CreateWeatherAndCity(WeatherAndCityDto weatherAndCityDto);
-        Task<WeatherAndCityDto> GetWeatherAndCityById(Guid id);
+        Task<WeatherAndCityDomainModel> GetWeatherAndCityById(Guid id);
     }
 }

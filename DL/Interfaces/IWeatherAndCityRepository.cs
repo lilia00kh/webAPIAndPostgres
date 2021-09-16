@@ -10,5 +10,6 @@ namespace DL.Interfaces
     {
         Task<IEnumerable<WeatherAndCityDomainModel>> GetAllWeathersAndCities();
         Task DeleteById(Guid id);
+        Task<WeatherAndCityDomainModel> GetById(Guid id);
     }
 }

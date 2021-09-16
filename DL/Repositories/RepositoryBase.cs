@@ -33,9 +33,7 @@ namespace DL.Repositories
         {
             var queryString =
                 $"DELETE FROM {tableName} Where \"Id\" = @id";
-            await using var query = new NpgsqlCommand(queryString, npgsqlConnection);
-            var ps = query.Parameters;
-            ps.AddWithValue("@id", NpgsqlDbType.Uuid,id);
+            var query = await QueryWithId(queryString, id);
             var res = await query.ExecuteNonQueryAsync();
             if (res==0)
             {
@@ -53,6 +51,27 @@ namespace DL.Repositories
         public Task<System.Linq.IQueryable<T>> FindByCondition(System.Linq.Expressions.Expression<Func<T, bool>> expression)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<NpgsqlDataReader> GetReader(Guid id, string tableName)
+        {
+            var queryString =
+                $"SELECT * FROM {tableName} Where \"Id\" = @id";
+            await using var query =await QueryWithId(queryString, id);
+            var reader = await query.ExecuteReaderAsync();
+            if (!reader.HasRows)
+            {
+                throw new ArgumentNullException("", $"Does not exist row in {tableName} with id \"{id}\"");
+            }
+            return reader;
+        }
+
+        private async Task<NpgsqlCommand> QueryWithId(string queryString, Guid id)
+        {
+            var query = new NpgsqlCommand(queryString, npgsqlConnection);
+            var ps = query.Parameters;
+            ps.AddWithValue("@id", NpgsqlDbType.Uuid, id);
+            return query;
         }
 
         public Task Update(T entity)

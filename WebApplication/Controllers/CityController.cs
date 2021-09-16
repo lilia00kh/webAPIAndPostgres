@@ -62,7 +62,7 @@ namespace WebApplication.Controllers
         {
             try
             {
-                var city = await _cityService.GetCityById(id);
+                var city = _autoMapper.Map<CityDto>(await _cityService.GetCityById(id));
                 return Ok(city);
             }
             catch (Exception ex)

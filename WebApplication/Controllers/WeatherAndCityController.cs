@@ -54,6 +54,20 @@ namespace WebApplication.Controllers
 
         }
 
+        [HttpGet("get/{id}")]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            try
+            {
+                var weatherAndCity = _autoMapper.Map<WeatherAndCityDto>(await weatherAndCityService.GetWeatherAndCityById(id));
+                return Ok(weatherAndCity);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         ////something....
 
         //[HttpGet("get/{id}")]

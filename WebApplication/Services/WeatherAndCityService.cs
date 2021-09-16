@@ -36,9 +36,9 @@ namespace WebApplication.Services
             throw new NotImplementedException();
         }
 
-        public async Task<WeatherAndCityDto> GetWeatherAndCityById(Guid id)
+        public async Task<WeatherAndCityDomainModel> GetWeatherAndCityById(Guid id)
         {
-            throw new NotImplementedException();
+            return await _weatherAndCityRepository.GetById(id);
         }
     }
 }

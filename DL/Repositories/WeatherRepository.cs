@@ -35,24 +35,37 @@ namespace DL.Repositories
                 $@"SELECT *
                 FROM {WeatherTable}";
 
-            using (var query = new NpgsqlCommand(queryString, npgsqlConnection))
+            await using var query = new NpgsqlCommand(queryString, npgsqlConnection);
+            var ps = query.Parameters;
+            await using var reader = await query.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
             {
-                var ps = query.Parameters;
-                using NpgsqlDataReader reader = await query.ExecuteReaderAsync();
-                while (await reader.ReadAsync())
-                {
-                    lstWeather.Add(
-                        new WeatherDomainModel()
-                        {
-                            Id = reader.GetGuid(reader.GetOrdinal("Id")),
-                            Date = reader.GetDateTime(reader.GetOrdinal("Date")),
-                            TemperatureC = reader.GetInt32(reader.GetOrdinal("TemperatureC")),
-                            Summary = reader.GetString(reader.GetOrdinal("Summary"))
-                        });
-                }
-
-                return lstWeather;
+                lstWeather.Add(NewWeatherDomainModel(reader));
             }
+
+            return lstWeather;
+        }
+
+        private static WeatherDomainModel NewWeatherDomainModel(NpgsqlDataReader reader)
+        {
+            return new WeatherDomainModel()
+            {
+                Id = reader.GetGuid(reader.GetOrdinal("Id")),
+                Date = reader.GetDateTime(reader.GetOrdinal("Date")),
+                TemperatureC = reader.GetInt32(reader.GetOrdinal("TemperatureC")),
+                Summary = reader.GetString(reader.GetOrdinal("Summary"))
+            };
+        }
+
+        public async Task<WeatherDomainModel> GetById(Guid id)
+        {
+            await using var reader = await GetReader(id, WeatherTable);
+            WeatherDomainModel weather = null;
+            if (await reader.ReadAsync())
+            {
+                weather = NewWeatherDomainModel(reader);
+            }
+            return weather;
         }
     }
 }

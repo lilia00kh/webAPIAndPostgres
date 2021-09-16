@@ -28,6 +28,26 @@ namespace DL.Repositories
             await Delete(id, WeatherAndCityTable);
         }
 
+        public async Task<WeatherAndCityDomainModel> GetById(Guid id){
+            await using var reader = await GetReader(id, WeatherAndCityTable);
+            WeatherAndCityDomainModel weatherAndCity = null;
+            if (await reader.ReadAsync())
+            {
+                weatherAndCity = NewWeatherAndCityDomainModel(reader);
+            }
+            return weatherAndCity;
+        }
+        private static WeatherAndCityDomainModel NewWeatherAndCityDomainModel(NpgsqlDataReader reader)
+        {
+            return
+                new WeatherAndCityDomainModel()
+                {
+                    Id = reader.GetGuid(reader.GetOrdinal("Id")),
+                    CityId = reader.GetGuid(reader.GetOrdinal("CityId")),
+                    WeatherId = reader.GetGuid(reader.GetOrdinal("WeatherId"))
+                };
+        }
+
         public async Task<IEnumerable<WeatherAndCityDomainModel>> GetAllWeathersAndCities()
         {
             var lstWeatherAndCity = new List<WeatherAndCityDomainModel>();
@@ -41,13 +61,7 @@ namespace DL.Repositories
                 using NpgsqlDataReader reader = await query.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
                 {
-                    lstWeatherAndCity.Add(
-                        new WeatherAndCityDomainModel()
-                        {
-                            Id = reader.GetGuid(reader.GetOrdinal("Id")),
-                            CityId = reader.GetGuid(reader.GetOrdinal("CityId")),
-                            WeatherId = reader.GetGuid(reader.GetOrdinal("WeatherId"))
-                        });
+                    lstWeatherAndCity.Add(NewWeatherAndCityDomainModel(reader));
                 }
 
                 return lstWeatherAndCity;
