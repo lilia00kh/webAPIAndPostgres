@@ -3,7 +3,10 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using WebApplication.DTO;
+using WebApplication.Interfaces;
 
 namespace WebApplication.Controllers
 {
@@ -12,14 +15,29 @@ namespace WebApplication.Controllers
     [ApiController]
     public class WeatherAndCityController : ControllerBase
     {
-        ////private readonly ApplicationContext _db = new ApplicationContext();
-        //[HttpGet]
-        //public IEnumerable<WeatherAndCityDto> Get()
-        //{
-        //    var weathersAndCities = _db.WeathersAndCities.ToList();
-        //    return weathersAndCities;
-        //}
+        private readonly IWeatherAndCityService weatherAndCityService;
+        private readonly IMapper _autoMapper;
 
+        public WeatherAndCityController(IWeatherAndCityService weatherAndCityService, IMapper autoMapper)
+        {
+            this.weatherAndCityService = weatherAndCityService;
+            _autoMapper = autoMapper ?? throw new ArgumentNullException(nameof(autoMapper));
+        }
+        ////private readonly ApplicationContext _db = new ApplicationContext();
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            try
+            {
+                var weathersAndCitesDto = _autoMapper.Map< IEnumerable<WeatherAndCityDto>>(await weatherAndCityService.GetWeathersAndCities());
+                return Ok(weathersAndCitesDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
         //[HttpDelete("delete/{id}")]
         //public ActionResult<WeatherAndCityDTO> Delete(Guid id)
         //{

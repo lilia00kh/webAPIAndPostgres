@@ -11,12 +11,6 @@ namespace WebApplication.DTO
         public Guid Id { get; set; }
         public Guid CityId { get; set; }
         public Guid WeatherId { get; set; }
-        [ForeignKey("CityId")]
-        public CityDto City { get; set; }
-        
-       
-        [ForeignKey("WeatherId")]
-        public WeatherDto Weather { get; set; }
 
     }
 }

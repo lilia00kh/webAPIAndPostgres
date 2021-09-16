@@ -27,9 +27,9 @@ namespace WebApplication.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<CityDomainModel>> GetCities()
+        public async Task<IEnumerable<CityDomainModel>> GetCities()
         {
-            return _cityRepository.GetAllCities();
+            return await _cityRepository.GetAllCities();
         }
 
         public Task<CityDto> GetCityById(Guid id)

@@ -9,11 +9,11 @@ using Npgsql;
 
 namespace DL.Repositories
 {
-    public class WeatherAndCityRepository : RepositoryBase<WeatherAndCityDomainModel>, IWeatherAndCityRepository
+    public class WeatherRepository: RepositoryBase<WeatherDomainModel>, IWeatherRepository
     {
         private readonly NpgsqlConnection npgsqlConnection;
-        private const string WeatherAndCityTable = @"""WeathersAndCities""";
-        public WeatherAndCityRepository(INpgSqlProvider connectionProvider)
+        private const string WeatherTable = @"""Weathers""";
+        public WeatherRepository(INpgSqlProvider connectionProvider)
         {
             if (connectionProvider == null)
             {
@@ -25,12 +25,12 @@ namespace DL.Repositories
 
 
 
-        public async Task<IEnumerable<WeatherAndCityDomainModel>> GetAllWeathersAndCities()
+        public async Task<IEnumerable<WeatherDomainModel>> GetAllWeathers()
         {
-            var lstWeatherAndCity = new List<WeatherAndCityDomainModel>();
+            var lstWeather = new List<WeatherDomainModel>();
             string queryString =
                 $@"SELECT *
-                FROM {WeatherAndCityTable}";
+                FROM {WeatherTable}";
 
             using (var query = new NpgsqlCommand(queryString, npgsqlConnection))
             {
@@ -38,18 +38,18 @@ namespace DL.Repositories
                 using NpgsqlDataReader reader = await query.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
                 {
-                    lstWeatherAndCity.Add(
-                        new WeatherAndCityDomainModel()
+                    lstWeather.Add(
+                        new WeatherDomainModel()
                         {
                             Id = reader.GetGuid(reader.GetOrdinal("Id")),
-                            CityId = reader.GetGuid(reader.GetOrdinal("CityId")),
-                            WeatherId = reader.GetGuid(reader.GetOrdinal("WeatherId"))
+                            Date = reader.GetDateTime(reader.GetOrdinal("Date")),
+                            TemperatureC = reader.GetInt32(reader.GetOrdinal("TemperatureC")),
+                            Summary = reader.GetString(reader.GetOrdinal("Summary"))
                         });
                 }
 
-                return lstWeatherAndCity;
+                return lstWeather;
             }
         }
-
     }
 }

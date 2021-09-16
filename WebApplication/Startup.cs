@@ -36,7 +36,9 @@ namespace WebApplication
             services.AddAutoMapper(typeof(AutoMapping));
             services.AddScoped<INpgSqlProvider, NpgSqlProvider>();
             services.AddScoped<IWeatherAndCityService, WeatherAndCityService>();
+            services.AddScoped< IWeatherAndCityRepository, WeatherAndCityRepository>();
             services.AddScoped<IWeatherService, WeatherService>();
+            services.AddScoped<IWeatherRepository, WeatherRepository>();
             services.AddScoped<ICityService, CityService>();
             services.AddScoped<ICityRepository, CityRepository>();
             services.AddControllers();

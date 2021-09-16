@@ -31,8 +31,8 @@ namespace WebApplication.Controllers
         {
             try
             {
-                var cities = await _cityService.GetCities();
-                return Ok(cities);
+                var citiesDto =  _autoMapper.Map<IEnumerable<CityDto>>(await _cityService.GetCities());
+                return Ok(citiesDto);
             }
             catch (Exception ex)
             {

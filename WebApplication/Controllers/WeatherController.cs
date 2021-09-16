@@ -3,6 +3,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using WebApplication.DTO;
 using WebApplication.Interfaces;
 
@@ -21,18 +23,28 @@ namespace WebApplication.Controllers
 
         //private readonly ILogger<WeatherForecastController> _logger;
         private readonly IWeatherService weatherService;
+        private readonly IMapper _autoMapper;
 
-        public WeatherController(IWeatherService weatherService)
+        public WeatherController(IWeatherService weatherService, IMapper autoMapper)
         {
             this.weatherService = weatherService;
+            _autoMapper = autoMapper ?? throw new ArgumentNullException(nameof(autoMapper));
         }
 
-        //[HttpGet]
-        //public IEnumerable<WeatherDTO> Get()
-        //{
-        //    var weatherForecasts = new List<WeatherDTO>() /*_db.WeatherForecasts.ToList()*/;
-        //    return weatherForecasts;
-        //}
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            try
+            {
+                var weathersDto = _autoMapper.Map< IEnumerable<WeatherDto>>(await weatherService.GetWeathers());
+                return Ok(weathersDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+           
+        }
 
         //[HttpDelete("delete/{id}")]
         //public ActionResult<WeatherDTO> Delete(Guid id)
