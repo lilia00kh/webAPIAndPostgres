@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using DL.DomainModels;
 using WebApplication.DTO;
 using WebApplication.Interfaces;
 
@@ -68,32 +67,19 @@ namespace WebApplication.Controllers
             }
         }
 
-        ////something....
-
-        //[HttpGet("get/{id}")]
-        //public ActionResult<WeatherAndCityDTO> Get(Guid id)
-        //{
-        //    var weathersAndCities = _db.WeathersAndCities.ToList();
-        //    var weatherAndCity = weathersAndCities.FirstOrDefault(x => x.Id == id);
-        //    if (weatherAndCity == null)
-        //        return NotFound();
-        //    return new ObjectResult(weatherAndCity);
-        //}
-
-        //[HttpPut("update")]
-        //public ActionResult<WeatherAndCityDTO> Update([FromBody] WeatherAndCityDTO weatherAndCity)
-        //{
-        //    _db.WeathersAndCities.Update(weatherAndCity);
-        //    _db.SaveChanges();
-        //    return Ok(weatherAndCity);
-        //}
-
-        //[HttpPost("add")]
-        //public ActionResult<WeatherAndCityDTO> Add([FromBody] WeatherAndCityDTO weatherAndCity)
-        //{
-        //    _db.WeathersAndCities.Add(weatherAndCity);
-        //    _db.SaveChanges();
-        //    return Ok();
-        //}
+        [HttpPut("update")]
+        public async Task<IActionResult> Update([FromBody] WeatherAndCityDto weatherAndCityDto)
+        {
+            try
+            {
+                var weatherAndCityDomainModel = _autoMapper.Map<WeatherAndCityDomainModel>(weatherAndCityDto);
+                await weatherAndCityService.UpdateWeatherAndCity(weatherAndCityDomainModel);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

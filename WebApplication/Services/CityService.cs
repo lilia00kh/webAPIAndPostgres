@@ -17,9 +17,9 @@ namespace WebApplication.Services
         {
             _cityRepository = cityRepository ?? throw new ArgumentNullException(nameof(cityRepository));
         }
-        public Task CreateCity(CityDto cityDto)
+        public async Task CreateCity(CityDomainModel cityDomainModel)
         {
-            throw new NotImplementedException();
+            await _cityRepository.Add(cityDomainModel);
         }
 
         public async Task DeleteCityById(Guid id)
@@ -37,9 +37,9 @@ namespace WebApplication.Services
             return await _cityRepository.GetById(id);
         }
 
-        public Task UpdateCity(CityDto cityDto)
+        public async Task UpdateCity(CityDomainModel cityDomainModel)
         {
-            throw new NotImplementedException();
+            await _cityRepository.Update(cityDomainModel);
         }
     }
 }

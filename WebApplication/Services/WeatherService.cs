@@ -28,14 +28,14 @@ namespace WebApplication.Services
             await _weatherRepository.DeleteById(id);
         }
 
-        public async Task UpdateWeather(WeatherDto weatherDto)
+        public async Task UpdateWeather(WeatherDomainModel weatherDomainModel)
         {
-            throw new NotImplementedException();
+            await _weatherRepository.Update(weatherDomainModel);
         }
 
-        public async Task CreateWeather(WeatherDto weatherDto)
+        public async Task CreateWeather(WeatherDomainModel weatherDomainModel)
         {
-            throw new NotImplementedException();
+            await _weatherRepository.Create(weatherDomainModel);
         }
 
         public async Task<WeatherDomainModel> GetWeatherById(Guid id)

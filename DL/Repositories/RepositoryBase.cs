@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using DL.DomainModels;
 using DL.Interfaces;
 using DL.Providers;
 using Npgsql;
@@ -61,6 +58,7 @@ namespace DL.Repositories
             var reader = await query.ExecuteReaderAsync();
             if (!reader.HasRows)
             {
+                reader.Close();
                 throw new ArgumentNullException("", $"Does not exist row in {tableName} with id \"{id}\"");
             }
             return reader;

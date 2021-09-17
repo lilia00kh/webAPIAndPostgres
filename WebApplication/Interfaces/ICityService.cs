@@ -11,8 +11,8 @@ namespace WebApplication.Interfaces
     {
         Task<IEnumerable<CityDomainModel>> GetCities();
         Task DeleteCityById(Guid id);
-        Task UpdateCity(CityDto cityDto);
-        Task CreateCity(CityDto cityDto);
+        Task UpdateCity(CityDomainModel cityDomainModel);
+        Task CreateCity(CityDomainModel cityDomainModel);
         Task<CityDomainModel> GetCityById(Guid id);
     }
 }

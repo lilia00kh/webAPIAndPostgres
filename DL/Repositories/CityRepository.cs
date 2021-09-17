@@ -2,14 +2,10 @@
 using DL.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Text;
 using System.Threading.Tasks;
+using DL.Exceptions;
 using DL.Providers;
-using DL.Utility;
 using Npgsql;
-using NpgsqlTypes;
 
 namespace DL.Repositories
 {
@@ -32,23 +28,18 @@ namespace DL.Repositories
         public async Task<IEnumerable<CityDomainModel>> GetAllCities()
         {
             var lstCity = new List<CityDomainModel>();
-            string queryString =
+            var queryString =
                 $@"SELECT *
                 FROM {CityTable}";
 
-            using (var query = new NpgsqlCommand(queryString, npgsqlConnection))
+            await using var query = new NpgsqlCommand(queryString, npgsqlConnection);
+            await using var reader = await query.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
             {
-
-                var ps = query.Parameters;
-                using NpgsqlDataReader reader =
-                    await query.ExecuteReaderAsync();
-                while (await reader.ReadAsync())
-                {
-                    lstCity.Add(NewCityDomainModel(reader));
-                }
-
-                return lstCity;
+                lstCity.Add(NewCityDomainModel(reader));
             }
+
+            return lstCity;
         }
         public async Task DeleteById(Guid id)
         {
@@ -71,6 +62,47 @@ namespace DL.Repositories
                 Id = reader.GetGuid(reader.GetOrdinal("Id")),
                 Name = reader.GetString(reader.GetOrdinal("Name"))
             };
+        }
+
+        public new async Task Update(CityDomainModel cityDomainModel)
+        {
+            try
+            {
+                await GetById(cityDomainModel.Id);
+
+                var queryString = $"Update {CityTable} SET \"Name\"=@name where \"Id\"=@id";
+                await ExecuteQuery(queryString, cityDomainModel);
+            }
+            catch
+            {
+                throw new CustomException(
+                    $"Row with id \"{cityDomainModel.Id}\" in table {CityTable} does not exist");
+            }
+
+        }
+
+        public async Task Add(CityDomainModel cityDomainModel)
+        {
+
+            try
+            {
+                await GetById(cityDomainModel.Id);
+                throw new CustomException(
+                    $"Row with id \"{cityDomainModel.Id}\" in table {CityTable} has already exist");
+            }
+            catch (ArgumentNullException)
+            {
+                var queryString = $"INSERT INTO {CityTable} (\"Id\",\"Name\") VALUES (@id,@name)";
+                await ExecuteQuery(queryString, cityDomainModel);
+            }
+        }
+
+        private async Task ExecuteQuery(string queryString, CityDomainModel cityDomainModel)
+        {
+            await using var query = new NpgsqlCommand(queryString, npgsqlConnection);
+            query.Parameters.AddWithValue("@id", cityDomainModel.Id);
+            query.Parameters.AddWithValue("@name", cityDomainModel.Name);
+            query.ExecuteNonQuery();
         }
     }
 }

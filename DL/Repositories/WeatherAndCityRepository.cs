@@ -2,8 +2,8 @@
 using DL.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using DL.Exceptions;
 using DL.Providers;
 using Npgsql;
 
@@ -66,6 +66,47 @@ namespace DL.Repositories
 
                 return lstWeatherAndCity;
             }
+        }
+
+        public new async Task Update(WeatherAndCityDomainModel weatherAndCityDomainModel)
+        {
+            try
+            {
+                await GetById(weatherAndCityDomainModel.Id);
+                var queryString = $"Update {WeatherAndCityTable} SET \"WeatherId\"=@weatherId,\"CityId\"=@cityId where \"Id\"=@id";
+                await ExecuteQuery(queryString, weatherAndCityDomainModel);
+            }
+            catch
+            {
+                throw new CustomException(
+                    $"Row with id \"{weatherAndCityDomainModel.Id}\" in table {WeatherAndCityTable} does not exist");
+            }
+
+        }
+
+        public new async Task Create(WeatherAndCityDomainModel weatherAndCityDomainModel)
+        {
+            try
+            {
+                if (await GetById(weatherAndCityDomainModel.Id) != null)
+                    throw new CustomException(
+                        $"Row with id \"{weatherAndCityDomainModel.Id}\" in table {WeatherAndCityTable} has already exist");
+            }
+            catch (ArgumentNullException)
+            {
+                var queryString = $"INSERT INTO {WeatherAndCityTable} (\"Id\",\"WeatherId\",\"CityId\") VALUES (@id,@weatherId,@cityId)";
+                await ExecuteQuery(queryString, weatherAndCityDomainModel);
+            }
+
+        }
+
+        private async Task ExecuteQuery(string queryString,WeatherAndCityDomainModel weatherAndCityDomainModel)
+        {
+            await using var query = new NpgsqlCommand(queryString, npgsqlConnection);
+            query.Parameters.AddWithValue("@id", weatherAndCityDomainModel.Id);
+            query.Parameters.AddWithValue("@weatherId", weatherAndCityDomainModel.WeatherId);
+            query.Parameters.AddWithValue("@cityId", weatherAndCityDomainModel.CityId);
+            query.ExecuteNonQuery();
         }
 
     }

@@ -11,8 +11,8 @@ namespace WebApplication.Interfaces
     {
         Task<IEnumerable<WeatherAndCityDomainModel>> GetWeathersAndCities();
         Task DeleteWeatherAndCityById(Guid id);
-        Task UpdateWeatherAndCity(WeatherAndCityDto weatherAndCityDto);
-        Task CreateWeatherAndCity(WeatherAndCityDto weatherAndCityDto);
+        Task UpdateWeatherAndCity(WeatherAndCityDomainModel weatherAndCityDomainModel);
+        Task CreateWeatherAndCity(WeatherAndCityDomainModel weatherAndCityDomainModel);
         Task<WeatherAndCityDomainModel> GetWeatherAndCityById(Guid id);
     }
 }

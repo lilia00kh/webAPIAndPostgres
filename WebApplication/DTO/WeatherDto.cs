@@ -1,16 +1,18 @@
+#nullable enable
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApplication.DTO
 {
     public class WeatherDto
     {
-        public Guid Id { get; set; }
-        public DateTime Date { get; set; }
+        [Required(ErrorMessage = "Id is required.")]
+        public Guid? Id { get; set; }
+        [Required(ErrorMessage = "TemperatureC is required.")]
 
-        public int TemperatureC { get; set; }
+        public int? TemperatureC { get; set; }
+        [Required(ErrorMessage = "Summary is required.")]
 
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-
-        public string Summary { get; set; }
+        public string? Summary { get; set; }
     }
 }

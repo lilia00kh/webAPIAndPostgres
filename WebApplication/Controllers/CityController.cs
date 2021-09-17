@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DL.DomainModels;
@@ -25,7 +23,7 @@ namespace WebApplication.Controllers
             _cityService = cityService ?? throw new ArgumentNullException(nameof(cityService));
             _autoMapper = autoMapper ?? throw new ArgumentNullException(nameof(autoMapper));
         }
-        //private readonly ApplicationContext _db = new ApplicationContext();
+
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -71,43 +69,34 @@ namespace WebApplication.Controllers
             }
         }
 
-        //[HttpPut("update")]
-        //public async Task<IActionResult> Update([FromBody] CityDto cityDto)
-        //{
-        //    try
-        //    {
-        //        var cityModel = new CityDomainModel()
-        //        {
-        //            Id = cityDto.Id,
-        //            Name = cityDto.Name
-        //        };
-        //        await _cityService.UpdateCity(cityModel);
-        //        return Ok();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+        [HttpPut("update")]
+        public async Task<IActionResult> Update([FromBody] CityDto cityDto)
+        {
+            try
+            {
+                var cityDomainModel = _autoMapper.Map<CityDomainModel>(cityDto);
+                await _cityService.UpdateCity(cityDomainModel);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-        //[HttpPost("add")]
-        //public async Task<IActionResult> Add([FromBody] CityDto cityDTO)
-        //{
-        //    try
-        //    {
-        //        var expJob = _autoMapper.Map<ExportJob>(exportJob.Data);
-        //        var cityModel = new CityModel()
-        //        {
-        //            Id = cityDTO.Id,
-        //            Name = cityDTO.Name
-        //        };
-        //        await _cityService.CreateCity(cityModel);
-        //        return Ok();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+        [HttpPost("add")]
+        public async Task<IActionResult> Add([FromBody] CityDto cityDto)
+        {
+            try
+            {
+                var cityDomainModel = _autoMapper.Map<CityDomainModel>(cityDto);
+                await _cityService.CreateCity(cityDomainModel);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

@@ -2,8 +2,8 @@
 using DL.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using DL.Exceptions;
 using DL.Providers;
 using Npgsql;
 
@@ -51,7 +51,7 @@ namespace DL.Repositories
             return new WeatherDomainModel()
             {
                 Id = reader.GetGuid(reader.GetOrdinal("Id")),
-                Date = reader.GetDateTime(reader.GetOrdinal("Date")),
+                //Date = reader.GetDateTime(reader.GetOrdinal("Date")),
                 TemperatureC = reader.GetInt32(reader.GetOrdinal("TemperatureC")),
                 Summary = reader.GetString(reader.GetOrdinal("Summary"))
             };
@@ -66,6 +66,50 @@ namespace DL.Repositories
                 weather = NewWeatherDomainModel(reader);
             }
             return weather;
+        }
+        public new async Task Update(WeatherDomainModel weatherDomainModel)
+        {
+            try
+            {
+                await GetById(weatherDomainModel.Id);
+                var queryString =
+                    $"Update {WeatherTable} SET \"Id\"=@id,\"Date\"=@date,\"TemperatureC\"=@temperatureC,\"TemperatureF\"=@temperatureF,\"Summary\"=@summary where \"Id\"=@id";
+
+                await ExecuteQuery(queryString, weatherDomainModel);
+            }
+            catch
+            {
+                throw new CustomException(
+                    $"Row with id \"{weatherDomainModel.Id}\" in table {WeatherTable} does not exist");
+            }
+            
+        }
+
+        public new async Task Create(WeatherDomainModel weatherDomainModel)
+        {
+            try
+            {
+                if (await GetById(weatherDomainModel.Id) != null)
+                    throw new CustomException(
+                        $"Row with id \"{weatherDomainModel.Id}\" in table {WeatherTable} has already exist");
+            }
+            catch(ArgumentNullException)
+            {
+                var queryString =
+                    $"INSERT INTO {WeatherTable} (\"Id\",\"Date\",\"TemperatureC\",\"TemperatureF\",\"Summary\") VALUES (@id,@date,@temperatureC,@temperatureF,@summary)";
+                await ExecuteQuery(queryString, weatherDomainModel);
+            }
+        }
+
+        private async Task ExecuteQuery(string queryString, WeatherDomainModel weatherDomainModel)
+        {
+            await using var query = new NpgsqlCommand(queryString, npgsqlConnection);
+            query.Parameters.AddWithValue("@id", weatherDomainModel.Id);
+            query.Parameters.AddWithValue("@date", weatherDomainModel.Date);
+            query.Parameters.AddWithValue("@temperatureC", weatherDomainModel.TemperatureC);
+            query.Parameters.AddWithValue("@temperatureF", weatherDomainModel.TemperatureF);
+            query.Parameters.AddWithValue("@summary", weatherDomainModel.Summary);
+            query.ExecuteNonQuery();
         }
     }
 }

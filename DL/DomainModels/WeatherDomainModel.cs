@@ -5,7 +5,7 @@ namespace DL.DomainModels
     public class WeatherDomainModel
     {
         public Guid Id { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime Date => DateTime.Now;
 
         public int TemperatureC { get; set; }
 

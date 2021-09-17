@@ -11,5 +11,6 @@ namespace DL.Interfaces
         public Task<IEnumerable<CityDomainModel>> GetAllCities();
         Task DeleteById(Guid id);
         Task<CityDomainModel> GetById(Guid id);
+        Task Add(CityDomainModel cityDomainModel);
     }
 }
